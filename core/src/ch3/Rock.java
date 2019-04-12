@@ -1,6 +1,5 @@
-package ch2;
+package ch3;
 
-import ch3.BaseActor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class Rock extends BaseActor {

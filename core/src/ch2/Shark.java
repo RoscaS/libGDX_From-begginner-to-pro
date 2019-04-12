@@ -11,26 +11,26 @@ public class Shark extends ActorBeta {
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public Shark() {
-	    super();
+    public Shark() {
+        super();
     }
 
 	/*------------------------------------------------------------------*\
 	|*							Public Methods 							*|
 	\*------------------------------------------------------------------*/
 
-	@Override
+    @Override
     public void act(float dt) {
-	    super.act(dt);
+        super.act(dt);
 
-	    if (getY() >= maxY) {
-	        direction = -1;
-	        coef += 1;
+        if (getY() >= maxY) {
+            direction = -1;
+            coef += 1;
         } else if (getY() <= minY) {
-	        direction = 1;
+            direction = 1;
         }
 
-	    moveBy(0, coef * direction);
+        moveBy(0, coef * direction);
     }
 
 	/*------------------------------------------------------------------*\

@@ -9,10 +9,10 @@ public class Whirpool extends BaseActor {
         loadAnimationFromSheet("ch3/whirlpool.png", 2, 5, 0.1f, false);
     }
 
-	public void act(float dt) {
-	    super.act(dt);
-	    if (isAnimationFinished()) {
-	        remove();
+    public void act(float dt) {
+        super.act(dt);
+        if (isAnimationFinished()) {
+            remove();
         }
     }
 

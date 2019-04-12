@@ -1,6 +1,5 @@
 package ch3;
 
-import ch2.Rock;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class LevelScreen extends BaseScreen {
@@ -41,17 +40,17 @@ public class LevelScreen extends BaseScreen {
 	|*							Public Methods 							*|
 	\*------------------------------------------------------------------*/
 
-	public void update(float dt) {
+    public void update(float dt) {
 
-        for (BaseActor rockActor : BaseActor.getList(mainStage,  rockClass)) {
+        for (BaseActor rockActor : BaseActor.getList(mainStage, rockClass)) {
             turtle.preventOverlap(rockActor);
             // rock.preventOverlap(turtle); // turtle pushes the rock !
         }
 
-        for (BaseActor starfishActor : BaseActor.getList(mainStage,  starfishClass)) {
-            Starfish starfish = (Starfish)starfishActor;
+        for (BaseActor starfishActor : BaseActor.getList(mainStage, starfishClass)) {
+            Starfish starfish = (Starfish) starfishActor;
             if (turtle.overlaps(starfish) && !starfish.isCollected()) {
-                starfish.setCollected(true);
+                starfish.collect();
                 starfish.clearActions();
                 starfish.addAction(Actions.fadeOut(1));
                 starfish.addAction(Actions.after(Actions.removeActor()));
@@ -65,11 +64,11 @@ public class LevelScreen extends BaseScreen {
         if (BaseActor.count(mainStage, starfishClass) == 0 && !win) {
             win = true;
             BaseActor youWinMessage = new BaseActor(0, 0, uiStage);
-       	    youWinMessage.loadTexture("ch3/you-win.png");
-       	    youWinMessage.centerAtPosition(400, 300);
-       	    youWinMessage.setOpacity(0);
-       	    youWinMessage.addAction(Actions.delay(1));
-       	    youWinMessage.addAction(Actions.after(Actions.fadeIn(1)));
+            youWinMessage.loadTexture("ch3/you-win.png");
+            youWinMessage.centerAtPosition(400, 300);
+            youWinMessage.setOpacity(0);
+            youWinMessage.addAction(Actions.delay(1));
+            youWinMessage.addAction(Actions.after(Actions.fadeIn(1)));
         }
     }
 }
