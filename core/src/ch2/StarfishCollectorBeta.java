@@ -51,6 +51,8 @@ public class StarfishCollectorBeta extends GameBeta {
         gameOverMessage.setVisible(false);
         mainStage.addActor(gameOverMessage);
 
+        // shark.addAction(Actions.forever(Actions.rotateBy(1)));
+
         win = false;
     }
 
