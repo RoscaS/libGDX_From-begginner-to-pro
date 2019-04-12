@@ -1,4 +1,4 @@
-package ch2;
+package beta;
 
 public class Shark extends ActorBeta {
 

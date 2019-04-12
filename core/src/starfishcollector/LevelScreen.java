@@ -1,4 +1,4 @@
-package ch3;
+package starfishcollector;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
@@ -18,7 +18,7 @@ public class LevelScreen extends BaseScreen {
     public void initialize() {
 
         BaseActor ocean = new BaseActor(0, 0, mainStage);
-        ocean.loadTexture("ch3/water-border.jpg");
+        ocean.loadTexture("water-border.jpg");
         ocean.setSize(1200, 900);
         BaseActor.setWorldBounds(ocean);
 
@@ -64,7 +64,7 @@ public class LevelScreen extends BaseScreen {
         if (BaseActor.count(mainStage, starfishClass) == 0 && !win) {
             win = true;
             BaseActor youWinMessage = new BaseActor(0, 0, uiStage);
-            youWinMessage.loadTexture("ch3/you-win.png");
+            youWinMessage.loadTexture("you-win.png");
             youWinMessage.centerAtPosition(400, 300);
             youWinMessage.setOpacity(0);
             youWinMessage.addAction(Actions.delay(1));

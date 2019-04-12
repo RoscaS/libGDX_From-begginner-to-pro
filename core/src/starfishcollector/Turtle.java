@@ -1,4 +1,4 @@
-package ch3;
+package starfishcollector;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,8 +11,8 @@ public class Turtle extends BaseActor {
 
         // Image
         String[] filenames = {
-                "ch3/turtle-1.png", "ch3/turtle-2.png", "ch3/turtle-3.png",
-                "ch3/turtle-4.png", "ch3/turtle-5.png", "ch3/turtle-6.png"
+                "turtle-1.png", "turtle-2.png", "turtle-3.png",
+                "turtle-4.png", "turtle-5.png", "turtle-6.png"
         };
         loadAnimationFromFiles(filenames, 0.1f, true);
 

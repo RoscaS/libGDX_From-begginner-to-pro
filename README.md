@@ -1,4 +1,6 @@
-### Ch3
+## Java gamedev with libGDX
+
+### Ch3 & ch4: Starfish Collector 
 
 ![Image](https://i.imgur.com/4tpaF3u.png)
 

@@ -1,4 +1,4 @@
-package ch3;
+package starfishcollector;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -12,7 +12,7 @@ public class Starfish extends BaseActor {
 
         collected = false;
 
-        loadTexture("ch3/starfish.png");
+        loadTexture("starfish.png");
         this.addAction(Actions.forever(Actions.rotateBy(30, 1)));
     }
 

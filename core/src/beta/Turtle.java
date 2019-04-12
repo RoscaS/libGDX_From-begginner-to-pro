@@ -1,9 +1,7 @@
-package ch2;
+package beta;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class Turtle extends ActorBeta {
 

@@ -1,4 +1,4 @@
-package ch2;
+package beta;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;

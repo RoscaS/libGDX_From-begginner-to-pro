@@ -1,4 +1,4 @@
-package ch3;
+package starfishcollector;
 
 import com.badlogic.gdx.Game;
 
