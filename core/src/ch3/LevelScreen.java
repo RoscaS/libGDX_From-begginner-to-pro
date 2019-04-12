@@ -3,7 +3,7 @@ package ch3;
 import ch2.Rock;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-public class StarfishCollector extends GameBeta {
+public class LevelScreen extends BaseScreen {
 
     private Turtle turtle;
     private boolean win;

@@ -38,6 +38,8 @@ public class Turtle extends BaseActor {
 
         // turtle is always facing the direction of his movement
         if (getSpeed() > 0) setRotation(getMotionAngle());
+
         boundToWorld();
+        alignCamera();
     }
 }
