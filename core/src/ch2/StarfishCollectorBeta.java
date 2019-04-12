@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class StarfishCollectorBeta extends GameBeta {
 
+    private Shark shark;
     private Turtle turtle;
     private ActorBeta starfish;
     private ActorBeta ocean;
     private ActorBeta winMessage;
+    private ActorBeta gameOverMessage;
 
     private boolean win;
 
@@ -32,11 +34,22 @@ public class StarfishCollectorBeta extends GameBeta {
         turtle.setPosition(20, 20);
         mainStage.addActor(turtle);
 
+        shark = new Shark();
+        shark.setTexture(new Texture(Gdx.files.internal("ch2/sharky.png")));
+        shark.setPosition(150, 150);
+        mainStage.addActor(shark);
+
         winMessage = new ActorBeta();
         winMessage.setTexture(new Texture(Gdx.files.internal("ch2/you-win.png")));
         winMessage.setPosition(180, 180);
         winMessage.setVisible(false);
         mainStage.addActor(winMessage);
+
+        gameOverMessage = new ActorBeta();
+        gameOverMessage.setTexture(new Texture(Gdx.files.internal("ch2/game-over.png")));
+        gameOverMessage.setPosition(180, 180);
+        gameOverMessage.setVisible(false);
+        mainStage.addActor(gameOverMessage);
 
         win = false;
     }
@@ -47,6 +60,10 @@ public class StarfishCollectorBeta extends GameBeta {
         if (turtle.overlaps(starfish)) {
             starfish.remove();
             winMessage.setVisible(true);
+        }
+        if (turtle.overlaps(shark)) {
+            turtle.remove();
+            gameOverMessage.setVisible(true);
         }
     }
 }

@@ -65,8 +65,9 @@ public class ActorBeta extends Actor {
         batch.setColor(c.r, c.g, c.b, c.a);
 
         if (isVisible()) {
-            batch.draw(textureRegion, getX(), getY(), getOriginX(), getOriginY(),
-                    getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+            batch.draw(textureRegion, getX(), getY(), getOriginX(),
+                    getOriginY(), getWidth(), getHeight(),
+                    getScaleX(), getScaleY(), getRotation());
         }
     }
 }
