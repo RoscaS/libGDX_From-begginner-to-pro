@@ -1,6 +1,8 @@
 package com.starfishcollector;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,12 +19,21 @@ import com.framework.DialogBox;
 
 public class LevelScreen extends BaseScreen {
 
+    // player
     private Turtle turtle;
-    private boolean win;
 
+    // ui
     private Label starfishLabel;
     private DialogBox dialogBox;
 
+    // audio
+    private float audioVolume;
+    private Sound waterDrop;
+    private Music instrumental;
+    private Music oceanSurf;
+
+    // tools
+    private boolean win;
     private final String rockClass = Rock.class.getCanonicalName();
     private final String signClass = Sign.class.getCanonicalName();
     private final String starfishClass = Starfish.class.getCanonicalName();
@@ -57,8 +68,8 @@ public class LevelScreen extends BaseScreen {
         new Rock(450, 200, mainStage);
 
         // add info signes
-        Sign s1 = new Sign(20,400, mainStage);
-        Sign s2 = new Sign(600,300, mainStage);
+        Sign s1 = new Sign(20, 400, mainStage);
+        Sign s2 = new Sign(600, 300, mainStage);
         s1.setText("West Starfish Bay");
         s2.setText("East Starfish Bay");
 
@@ -66,21 +77,47 @@ public class LevelScreen extends BaseScreen {
         starfishLabel = new Label("Starfish left:", BaseGame.labelStyle);
         starfishLabel.setColor(Color.CYAN);
 
-        Button.ButtonStyle buttonStyle = new Button.ButtonStyle();
+        // Ui initialization: button restart
+        Button.ButtonStyle buttonStyle1 = new Button.ButtonStyle();
 
-        Texture buttonTex = new Texture(Gdx.files.internal("undo.png"));
-        TextureRegion buttonRegion = new TextureRegion(buttonTex);
-        buttonStyle.up = new TextureRegionDrawable(buttonRegion);
+        Texture buttonTex1 = new Texture(Gdx.files.internal("undo.png"));
+        TextureRegion buttonRegion1 = new TextureRegion(buttonTex1);
+        buttonStyle1.up = new TextureRegionDrawable(buttonRegion1);
 
-        Button restartButton = new Button(buttonStyle);
+        Button restartButton = new Button(buttonStyle1);
         restartButton.setColor(Color.CYAN);
 
         restartButton.addListener((Event e) -> {
-            InputEvent ie = (InputEvent) e;
-            if (ie.getType().equals(InputEvent.Type.touchDown))
-                StarfishGame.setActiveScreen(new LevelScreen());
-            return false;
+            if (!isTouchDownEvent(e)) return false;
+            instrumental.dispose();
+            oceanSurf.dispose();
+            StarfishGame.setActiveScreen(new LevelScreen());
+            return true;
         });
+
+        // Ui initialization: button mute audio
+        Button.ButtonStyle buttonStyle2 = new Button.ButtonStyle();
+
+        Texture buttonTex2 = new Texture(Gdx.files.internal("audio.png"));
+        TextureRegion buttonRegion2 = new TextureRegion(buttonTex2);
+        buttonStyle2.up = new TextureRegionDrawable( buttonRegion2 );
+
+        Button muteButton = new Button(buttonStyle2);
+        muteButton.setColor(Color.CYAN);
+
+        muteButton.addListener((Event e) -> {
+            if (!isTouchDownEvent(e)) return false;
+            audioVolume = 1 - audioVolume;
+            instrumental.setVolume(audioVolume);
+            oceanSurf.setVolume(audioVolume);
+            return true;
+        });
+
+        uiTable.pad(10);
+        uiTable.add(starfishLabel).top();
+        uiTable.add().expandX().expandY();
+        uiTable.add(muteButton).top();
+        uiTable.add(restartButton).top();
 
         dialogBox = new DialogBox(0,0, uiStage);
         dialogBox.setBackgroundColor( Color.TAN );
@@ -90,12 +127,23 @@ public class LevelScreen extends BaseScreen {
         dialogBox.alignCenter();
         dialogBox.setVisible(false);
 
-        uiTable.pad(10);
-        uiTable.add(starfishLabel).top();
-        uiTable.add().expandX().expandY();
-        uiTable.add(restartButton).top();
         uiTable.row();
-        uiTable.add(dialogBox).colspan(3);
+        uiTable.add(dialogBox).colspan(4);
+
+        // audio
+        waterDrop = Gdx.audio.newSound(Gdx.files.internal("audio/Water_Drop.ogg"));
+        instrumental = Gdx.audio.newMusic(Gdx.files.internal("audio/Master_of_the_Feast.ogg"));
+        oceanSurf = Gdx.audio.newMusic(Gdx.files.internal("audio/Ocean_Waves.ogg"));
+
+        audioVolume = 1.00f;
+
+        instrumental.setLooping(true);
+        instrumental.setVolume(audioVolume);
+        instrumental.play();
+
+        oceanSurf.setLooping(true);
+        oceanSurf.setVolume(audioVolume);
+        oceanSurf.play();
     }
 
 	/*------------------------------------------------------------------*\
@@ -115,7 +163,10 @@ public class LevelScreen extends BaseScreen {
         for (BaseActor starfishActor : BaseActor.getList(mainStage, starfishClass)) {
             Starfish starfish = (Starfish) starfishActor;
             if (turtle.overlaps(starfish) && !starfish.isCollected()) {
+
                 starfish.collect();
+                waterDrop.play(audioVolume);
+
                 starfish.clearActions();
                 starfish.addAction(Actions.fadeOut(1));
                 starfish.addAction(Actions.after(Actions.removeActor()));
@@ -128,7 +179,7 @@ public class LevelScreen extends BaseScreen {
 
         // sign dialogbox proximity check
         for (BaseActor signActor : BaseActor.getList(mainStage, signClass)) {
-            Sign sign = (Sign)signActor;
+            Sign sign = (Sign) signActor;
             turtle.preventOverlap(sign);
             boolean nearby = turtle.isWithinDistance(4, sign);
 
