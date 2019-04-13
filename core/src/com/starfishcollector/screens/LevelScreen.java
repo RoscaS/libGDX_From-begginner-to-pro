@@ -1,4 +1,4 @@
-package com.starfishcollector;
+package com.starfishcollector.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,6 +15,8 @@ import com.framework.BaseActor;
 import com.framework.BaseGame;
 import com.framework.BaseScreen;
 import com.framework.DialogBox;
+import com.starfishcollector.*;
+import com.starfishcollector.actors.*;
 
 public class LevelScreen extends BaseScreen {
 
@@ -37,7 +38,6 @@ public class LevelScreen extends BaseScreen {
     private final String rockClass = Rock.class.getCanonicalName();
     private final String signClass = Sign.class.getCanonicalName();
     private final String starfishClass = Starfish.class.getCanonicalName();
-
 
 	/*------------------------------------------------------------------*\
 	|*							Constructors							*|

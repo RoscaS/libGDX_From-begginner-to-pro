@@ -1,8 +1,6 @@
-package com.starfishcollector;
+package com.starfishcollector.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.framework.BaseActor;
@@ -17,8 +15,6 @@ public class StoryScreen extends BaseScreen {
 
     Scene scene;
     BaseActor continueKey;
-
-
 
     /*------------------------------------------------------------------*\
     |*							Constructors							*|

@@ -8,16 +8,6 @@ public class SceneSegment {
     private Actor actor;
     private Action action;
 
-	/*------------------------------------------------------------------*\
-	|*							Constructors							*|
-	\*------------------------------------------------------------------*/
-
-    public SceneSegment(Actor actor, Action action) {
-        this.actor = actor;
-        this.action = action;
-    }
-
-
     /*------------------------------------------------------------------*\
    	|*							Public Methods 							*|
    	\*------------------------------------------------------------------*/
@@ -36,5 +26,14 @@ public class SceneSegment {
 
     public boolean isFinished() {
         return (actor.getActions().size == 0);
+    }
+
+    /*------------------------------*\
+   	|*				Setters			*|
+   	\*------------------------------*/
+
+    public SceneSegment(Actor actor, Action action) {
+        this.actor = actor;
+        this.action = action;
     }
 }

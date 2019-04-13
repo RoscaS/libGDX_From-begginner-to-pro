@@ -43,7 +43,7 @@ public class BaseActor extends Group {
     private static Rectangle worldBounds;
 
 	/*------------------------------------------------------------------*\
-	|*							Constructors							*|
+	|*							Initialization							*|
 	\*------------------------------------------------------------------*/
 
     public BaseActor(float x, float y, Stage s) {

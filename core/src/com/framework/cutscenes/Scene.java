@@ -9,7 +9,7 @@ public class Scene extends Actor {
     private int index;
 
 	/*------------------------------------------------------------------*\
-	|*							Constructors							*|
+	|*							Initialization							*|
 	\*------------------------------------------------------------------*/
 
     public Scene() {

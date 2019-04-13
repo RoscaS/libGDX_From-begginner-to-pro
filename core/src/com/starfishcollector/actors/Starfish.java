@@ -1,4 +1,4 @@
-package com.starfishcollector;
+package com.starfishcollector.actors;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;

@@ -17,6 +17,9 @@ public abstract class BaseScreen implements Screen, InputProcessor {
     protected Stage uiStage;
     protected Table uiTable;
 
+    /*------------------------------------------------------------------*\
+   	|*							Initialization							*|
+   	\*------------------------------------------------------------------*/
 
     public BaseScreen() {
         mainStage = new Stage();

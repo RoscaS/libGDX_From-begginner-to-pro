@@ -19,17 +19,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
  */
 public abstract class BaseGame extends Game {
 
-    /**
-     * Stores reference to game; used when calling setActiveScreen method.
-     */
+
+    // stores reference to game; used when calling setActiveScreen method.
     private static BaseGame game;
 
+    // texts
     public static BitmapFont customFont;
     public static Label.LabelStyle labelStyle; // BitmapFont + Color
     public static TextButton.TextButtonStyle textButtonStyle; // NPD + BitmapFont + Color
 
     /*------------------------------------------------------------------*\
-   	|*							Constructors							*|
+   	|*							Initialization							*|
    	\*------------------------------------------------------------------*/
 
     /**
@@ -43,6 +43,7 @@ public abstract class BaseGame extends Game {
      * Called when game is initialized,
      * after Gdx.input and other objects have been initialized.
      */
+    @Override
     public void create() {
         // prepare for multiple classes/stages/actors to receive discrete input
         InputMultiplexer im = new InputMultiplexer();

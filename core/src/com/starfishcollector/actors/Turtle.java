@@ -1,4 +1,4 @@
-package com.starfishcollector;
+package com.starfishcollector.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

@@ -1,4 +1,4 @@
-package com.starfishcollector;
+package com.starfishcollector.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.framework.BaseActor;
 import com.framework.BaseGame;
 import com.framework.BaseScreen;
+import com.starfishcollector.StarfishGame;
 
 public class MenuScreen extends BaseScreen {
 
