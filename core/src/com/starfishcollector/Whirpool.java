@@ -1,6 +1,7 @@
 package com.starfishcollector;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.framework.BaseActor;
 
 public class Whirpool extends BaseActor {
 

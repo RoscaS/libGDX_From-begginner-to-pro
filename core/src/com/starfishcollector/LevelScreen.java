@@ -10,6 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.framework.BaseActor;
+import com.framework.BaseGame;
+import com.framework.BaseScreen;
+import com.framework.DialogBox;
 
 public class LevelScreen extends BaseScreen {
 
@@ -17,9 +21,12 @@ public class LevelScreen extends BaseScreen {
     private boolean win;
 
     private Label starfishLabel;
+    private DialogBox dialogBox;
 
     private final String rockClass = Rock.class.getCanonicalName();
+    private final String signClass = Sign.class.getCanonicalName();
     private final String starfishClass = Starfish.class.getCanonicalName();
+
 
 	/*------------------------------------------------------------------*\
 	|*							Constructors							*|
@@ -27,7 +34,6 @@ public class LevelScreen extends BaseScreen {
 
     @Override
     public void initialize() {
-
         // initialize ocean texture
         BaseActor ocean = new BaseActor(0, 0, mainStage);
         ocean.loadTexture("water-border.jpg");
@@ -50,32 +56,46 @@ public class LevelScreen extends BaseScreen {
         new Rock(300, 350, mainStage);
         new Rock(450, 200, mainStage);
 
-        // initialize "starfish left" label
-        starfishLabel = new Label("Starfish left: ", BaseGame.labelStyle);
-        starfishLabel.setColor(Color.CYAN);
-        starfishLabel.setPosition(20, 520);
-        uiStage.addActor(starfishLabel);
+        // add info signes
+        Sign s1 = new Sign(20,400, mainStage);
+        Sign s2 = new Sign(600,300, mainStage);
+        s1.setText("West Starfish Bay");
+        s2.setText("East Starfish Bay");
 
-        // "button restart" style
+        // Ui initialization
+        starfishLabel = new Label("Starfish left:", BaseGame.labelStyle);
+        starfishLabel.setColor(Color.CYAN);
+
         Button.ButtonStyle buttonStyle = new Button.ButtonStyle();
-        Texture buttonTexture = new Texture(Gdx.files.internal("undo.png"));
-        TextureRegion buttonRegion = new TextureRegion(buttonTexture);
+
+        Texture buttonTex = new Texture(Gdx.files.internal("undo.png"));
+        TextureRegion buttonRegion = new TextureRegion(buttonTex);
         buttonStyle.up = new TextureRegionDrawable(buttonRegion);
 
-        // initialize "button restart
         Button restartButton = new Button(buttonStyle);
         restartButton.setColor(Color.CYAN);
-        restartButton.setPosition(720, 520);
-        uiStage.addActor(restartButton);
 
         restartButton.addListener((Event e) -> {
-            if (!(e instanceof InputEvent) || !((InputEvent)e).getType().equals(InputEvent.Type.touchDown)) {
-                return false;
-            }
-            StarfishGame.setActiveScreen(new LevelScreen());
+            InputEvent ie = (InputEvent) e;
+            if (ie.getType().equals(InputEvent.Type.touchDown))
+                StarfishGame.setActiveScreen(new LevelScreen());
             return false;
         });
 
+        dialogBox = new DialogBox(0,0, uiStage);
+        dialogBox.setBackgroundColor( Color.TAN );
+        dialogBox.setFontColor( Color.BROWN );
+        dialogBox.setDialogSize(600, 100);
+        dialogBox.setFontScale(0.80f);
+        dialogBox.alignCenter();
+        dialogBox.setVisible(false);
+
+        uiTable.pad(10);
+        uiTable.add(starfishLabel).top();
+        uiTable.add().expandX().expandY();
+        uiTable.add(restartButton).top();
+        uiTable.row();
+        uiTable.add(dialogBox).colspan(3);
     }
 
 	/*------------------------------------------------------------------*\
@@ -83,7 +103,6 @@ public class LevelScreen extends BaseScreen {
 	\*------------------------------------------------------------------*/
 
     public void update(float dt) {
-
         // update label
         starfishLabel.setText("Starfish left: " + BaseActor.count(mainStage, starfishClass));
 
@@ -92,6 +111,7 @@ public class LevelScreen extends BaseScreen {
             // rock.preventOverlap(turtle); // turtle pushes the rock !
         }
 
+        // starfish collection
         for (BaseActor starfishActor : BaseActor.getList(mainStage, starfishClass)) {
             Starfish starfish = (Starfish) starfishActor;
             if (turtle.overlaps(starfish) && !starfish.isCollected()) {
@@ -106,6 +126,26 @@ public class LevelScreen extends BaseScreen {
             }
         }
 
+        // sign dialogbox proximity check
+        for (BaseActor signActor : BaseActor.getList(mainStage, signClass)) {
+            Sign sign = (Sign)signActor;
+            turtle.preventOverlap(sign);
+            boolean nearby = turtle.isWithinDistance(4, sign);
+
+            if (nearby && !sign.isViewing()) {
+                dialogBox.setText(sign.getText());
+                dialogBox.setVisible(true);
+                sign.setViewing(true);
+            }
+
+            if (sign.isViewing() && !nearby) {
+                dialogBox.setText(" ");
+                dialogBox.setVisible(false);
+                sign.setViewing(false);
+            }
+        }
+
+        // victory condition
         if (BaseActor.count(mainStage, starfishClass) == 0 && !win) {
             win = true;
             BaseActor youWinMessage = new BaseActor(0, 0, uiStage);
@@ -116,4 +156,8 @@ public class LevelScreen extends BaseScreen {
             youWinMessage.addAction(Actions.after(Actions.fadeIn(1)));
         }
     }
+
+    /*------------------------------------------------------------------*\
+   	|*							Private Methods 						*|
+   	\*------------------------------------------------------------------*/
 }

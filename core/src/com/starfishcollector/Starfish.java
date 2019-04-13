@@ -2,6 +2,7 @@ package com.starfishcollector;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.framework.BaseActor;
 
 public class Starfish extends BaseActor {
 

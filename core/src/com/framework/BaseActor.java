@@ -1,4 +1,4 @@
-package com.starfishcollector;
+package com.framework;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -11,8 +11,8 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 
@@ -73,6 +73,41 @@ public class BaseActor extends Group {
    	\*------------------------------------------------------------------*/
 
     /*------------------------------*\
+   	|*				Getters			*|
+   	\*------------------------------*/
+
+    /**
+     * Get world dimensions
+     *
+     * @return Rectangle whose width/height represent world bounds
+     */
+    public static Rectangle getWorldBounds() {
+        return worldBounds;
+    }
+    /*------------------------------*\
+   	|*				Setters			*|
+   	\*------------------------------*/
+
+    /**
+     * Set world dimensions for use by methods boundToWorld() and scrollTo().
+     *
+     * @param width  width of world
+     * @param height height of world
+     */
+    public static void setWorldBounds(float width, float height) {
+        worldBounds = new Rectangle(0, 0, width, height);
+    }
+
+    /**
+     * Set world dimensions for use by methods boundToWorld() and scrollTo().
+     *
+     * @param ba whose size determines the world bounds (typically a background image)
+     */
+    public static void setWorldBounds(BaseActor ba) {
+        setWorldBounds(ba.getWidth(), ba.getHeight());
+    }
+
+    /*------------------------------*\
    	|*				Tools			*|
    	\*------------------------------*/
 
@@ -86,8 +121,8 @@ public class BaseActor extends Group {
      * @param className name of a class that extends the BaseActor class
      * @return list of instances of the object in stage which extend with the given class name
      */
-    public static ArrayList<BaseActor> getList(Stage stage, String className) {
-        ArrayList<BaseActor> actors = new ArrayList<BaseActor>();
+    public static Array<BaseActor> getList(Stage stage, String className) {
+        Array<BaseActor> actors = new Array<BaseActor>();
         Class theClass = null;
         try {
             theClass = Class.forName(className);
@@ -109,30 +144,7 @@ public class BaseActor extends Group {
      * @return number of instances of the class
      */
     public static int count(Stage stage, String className) {
-        return getList(stage, className).size();
-    }
-
-    /*------------------------------*\
-   	|*				Collision		*|
-   	\*------------------------------*/
-
-    /**
-     * Set world dimensions for use by methods boundToWorld() and scrollTo().
-     *
-     * @param width  width of world
-     * @param height height of world
-     */
-    public static void setWorldBounds(float width, float height) {
-        worldBounds = new Rectangle(0, 0, width, height);
-    }
-
-    /**
-     * Set world dimensions for use by methods boundToWorld() and scrollTo().
-     *
-     * @param ba whose size determines the world bounds (typically a background image)
-     */
-    public static void setWorldBounds(BaseActor ba) {
-        setWorldBounds(ba.getWidth(), ba.getHeight());
+        return getList(stage, className).size;
     }
 
     /*------------------------------------------------------------------*\
@@ -583,6 +595,29 @@ public class BaseActor extends Group {
     }
 
     /**
+     * Determine if this BaseActor is near other BaseActor (according to collision polygons).
+     *
+     * @param distance amount (pixels) by which to enlarge collision polygon width and height
+     * @param other    BaseActor to check if nearby
+     * @return true if collision polygons of this (enlarged) and other BaseActor overlap
+     * @see #setBoundaryRectangle
+     * @see #setBoundaryPolygon
+     */
+    public boolean isWithinDistance(float distance, BaseActor other) {
+        Polygon p1 = this.getBoundaryPolygon();
+        Polygon p2 = other.getBoundaryPolygon();
+
+        float scaleX = (this.getWidth() + 2 * distance) / this.getWidth();
+        float scaleY = (this.getHeight() + 2 * distance) / this.getHeight();
+
+        p1.setScale(scaleX, scaleY);
+
+        // initial test to improve performance
+        if (!p1.getBoundingRectangle().overlaps(p2.getBoundingRectangle())) return false;
+        return Intersector.overlapConvexPolygons(p1, p2);
+    }
+
+    /**
      * If an edge of an object moves past the world bounds,
      * adjust its position to keep it completely on screen.
      */
@@ -592,7 +627,6 @@ public class BaseActor extends Group {
         if (getY() < 0) setY(0);
         if (getY() + getHeight() > worldBounds.height) setY(worldBounds.height - getHeight());
     }
-
 
     /*------------------------------*\
    	|*				Camera  		*|
