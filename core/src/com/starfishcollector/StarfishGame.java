@@ -1,4 +1,4 @@
-package starfishcollector;
+package com.starfishcollector;
 
 public class StarfishGame extends BaseGame {
 

@@ -1,8 +1,9 @@
-package com.mygdx.frombegginertopro.desktop;
+package com.starfishcollector.desktop;
 
-import starfishcollector.StarfishGame;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.starfishcollector.StarfishGame;
 
 
 public class DesktopLauncher {
