@@ -2,6 +2,7 @@ package com.starfishcollector;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -10,6 +11,9 @@ import com.framework.BaseGame;
 import com.framework.BaseScreen;
 
 public class MenuScreen extends BaseScreen {
+
+    // audio
+    private Music oceanSurf;
 
 	/*------------------------------------------------------------------*\
 	|*							Constructors							*|
@@ -38,6 +42,11 @@ public class MenuScreen extends BaseScreen {
             Gdx.app.exit();
             return true;
         });
+
+        oceanSurf = Gdx.audio.newMusic(Gdx.files.internal("audio/Ocean_Waves.ogg"));
+        oceanSurf.setLooping(true);
+        oceanSurf.setVolume(.5f);
+        oceanSurf.play();
 
         uiTable.add(title).colspan(2);
         uiTable.row();
