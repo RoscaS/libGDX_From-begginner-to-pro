@@ -6,15 +6,14 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.framework.BaseActor;
-import com.framework.BaseGame;
-import com.framework.BaseScreen;
-import com.framework.DialogBox;
+import com.framework.*;
 import com.starfishcollector.*;
 import com.starfishcollector.actors.*;
 
@@ -45,33 +44,34 @@ public class LevelScreen extends BaseScreen {
 
     @Override
     public void initialize() {
-        // initialize ocean texture
-        BaseActor ocean = new BaseActor(0, 0, mainStage);
-        ocean.loadTexture("water-border.jpg");
-        ocean.setSize(1200, 900);
-        BaseActor.setWorldBounds(ocean);
 
         // initialize member attrs
         win = false;
-        turtle = new Turtle(20, 20, mainStage);
 
-        // add starfish actors to stage
-        new Starfish(400, 400, mainStage);
-        new Starfish(500, 100, mainStage);
-        new Starfish(100, 450, mainStage);
-        new Starfish(200, 250, mainStage);
+        // initialize tilemap objects
+        TilemapActor tma = new TilemapActor("map.tmx", mainStage);
 
-        // add rock actors to stage
-        new Rock(200, 150, mainStage);
-        new Rock(100, 150, mainStage);
-        new Rock(300, 350, mainStage);
-        new Rock(450, 200, mainStage);
 
-        // add info signes
-        Sign s1 = new Sign(20, 400, mainStage);
-        Sign s2 = new Sign(600, 300, mainStage);
-        s1.setText("West Starfish Bay");
-        s2.setText("East Starfish Bay");
+        for (MapObject obj : tma.getTileList("Starfish")) {
+            MapProperties props = obj.getProperties();
+            new Starfish((float) props.get("x"), (float) props.get("y"), mainStage);
+        }
+
+        for (MapObject obj : tma.getTileList("Rock")) {
+            MapProperties props = obj.getProperties();
+            new Rock((float) props.get("x"), (float) props.get("y"), mainStage);
+        }
+
+        for (MapObject obj : tma.getTileList("Sign")) {
+            MapProperties props = obj.getProperties();
+            Sign s = new Sign((float) props.get("x"), (float) props.get("y"), mainStage);
+            s.setText((String) props.get("message"));
+        }
+
+        MapObject startPoint = tma.getRectangleList("Start").get(0);
+        MapProperties props = startPoint.getProperties();
+        turtle = new Turtle((float) props.get("x"), (float) props.get("y"), mainStage);
+
 
         // Ui initialization
         starfishLabel = new Label("Starfish left:", BaseGame.labelStyle);
@@ -100,7 +100,7 @@ public class LevelScreen extends BaseScreen {
 
         Texture buttonTex2 = new Texture(Gdx.files.internal("audio.png"));
         TextureRegion buttonRegion2 = new TextureRegion(buttonTex2);
-        buttonStyle2.up = new TextureRegionDrawable( buttonRegion2 );
+        buttonStyle2.up = new TextureRegionDrawable(buttonRegion2);
 
         Button muteButton = new Button(buttonStyle2);
         muteButton.setColor(Color.CYAN);
@@ -119,9 +119,9 @@ public class LevelScreen extends BaseScreen {
         uiTable.add(muteButton).top();
         uiTable.add(restartButton).top();
 
-        dialogBox = new DialogBox(0,0, uiStage);
-        dialogBox.setBackgroundColor( Color.TAN );
-        dialogBox.setFontColor( Color.BROWN );
+        dialogBox = new DialogBox(0, 0, uiStage);
+        dialogBox.setBackgroundColor(Color.TAN);
+        dialogBox.setFontColor(Color.BROWN);
         dialogBox.setDialogSize(600, 100);
         dialogBox.setFontScale(0.80f);
         dialogBox.alignCenter();
